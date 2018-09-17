@@ -71,12 +71,12 @@ test('Net can send and receive primitive messages', function t(assert) {
         receiver.listen.bind(receiver)
     ], function parallelCallback(err) {
         assert.notOk(err);
-
-        senderPort = sender.udpSocket.address().port;
-        receiverPort = receiver.udpSocket.address().port;
+        senderPort = sender.server.address().port;
+        receiverPort = receiver.server.address().port;
 
         async.each(tests, function runTest(test, callback) {
             receiver.on(test.event, function onEvent(data, host) {
+
                 assert.deepEqual(data, test.data);
                 assert.strictEqual(parseInt(host.split(':')[1]), senderPort);
 
